@@ -1,11 +1,14 @@
 package com.jansob.spring.quizbackend.question;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.data.annotation.CreatedDate;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 
@@ -15,7 +18,7 @@ import java.util.List;
 @Setter
 @ToString
 @Entity
-@Table(name = "Question")
+@Table
 public class Question {
     @Id
     @SequenceGenerator(
@@ -38,7 +41,7 @@ public class Question {
 
 
     @ElementCollection
-    @Column(name = "wrong")
+    @Column
     private List<String> wrong = new java.util.ArrayList<>();
 
 
@@ -47,9 +50,18 @@ public class Question {
     private Integer difficulty;
 
 
-    @CreatedDate
-    @Column(name = "created_at", nullable = false, columnDefinition = "TIMESTAMP")
-    private LocalDateTime created;
+    @CreationTimestamp
+    private Date created;
 
+    @UpdateTimestamp
+    private Date modified;
 
+    // Constructor for sample-data
+    public Question(Long id, String question, String correct, List<String> wrong, Integer difficulty) {
+        this.id = id;
+        this.question = question;
+        this.correct = correct;
+        this.wrong = wrong;
+        this.difficulty = difficulty;
+    }
 }
